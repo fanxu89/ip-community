@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>同行者 — 陪你打造个人IP的成长社区</title>
+  <style>
+    :root {
+      --amber: #f59e0b;
+      --amber-light: #fcd34d;
+      --amber-dark: #d97706;
+      --warm: #fb923c;
+      --dark: #0f0e0c;
+      --dark2: #161410;
+      --dark3: #1e1b15;
+      --card: #211e18;
+      --card2: #2a2620;
+      --text: #f0ece4;
+      --text2: #9d9282;
+      --text3: #c9bfaf;
+      --accent: #4ade80;
+      --accent2: #60a5fa;
+      --rose: #fb7185;
+      --border: rgba(245,158,11,0.1);
+      --border2: rgba(255,255,255,0.06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 6%;
+      background: rgba(15,14,12,0.9);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 800; color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .nav-logo-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 12px var(--amber);
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow { 0%,100% { opacity:1; box-shadow: 0 0 12px var(--amber); } 50% { opacity:0.6; box-shadow: 0 0 4px var(--amber); } }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta {
+      padding: 9px 22px; border-radius: 10px;
+      background: var(--amber); color: #000;
+      font-weight: 700; font-size: 0.88rem; text-decoration: none;
+      transition: all 0.2s; box-shadow: 0 2px 16px rgba(245,158,11,0.3);
+    }
+    .nav-cta:hover { background: var(--amber-light); transform: translateY(-1px); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 130px 6% 90px;
+      position: relative; overflow: hidden;
+    }
+    .hero-noise {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    .hero-glow1 { position: absolute; top: -100px; left: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 70%); pointer-events: none; }
+    .hero-glow2 { position: absolute; bottom: -50px; right: -50px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(251,146,60,0.05) 0%, transparent 70%); pointer-events: none; }
+
+    .hero-inner { position: relative; z-index: 1; display: flex; gap: 80px; align-items: center; width: 100%; max-width: 1200px; }
+    .hero-left { flex: 1; max-width: 620px; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 7px 16px; border-radius: 8px;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.2);
+      font-size: 0.8rem; color: var(--amber); font-weight: 600;
+      margin-bottom: 28px; letter-spacing: 0.5px;
+    }
+    .live-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.12;
+      letter-spacing: -2px; margin-bottom: 10px;
+    }
+    .hero h1 .line2 {
+      color: var(--amber);
+      display: block;
+    }
+    .hero h1 .line3 { display: block; color: var(--text2); font-size: 0.62em; font-weight: 500; letter-spacing: -0.5px; margin-top: 12px; }
+
+    .hero-desc {
+      font-size: 1.08rem; color: var(--text3); line-height: 1.8;
+      margin: 28px 0 40px; max-width: 520px;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 600; }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; }
+    .btn-main {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 30px; border-radius: 12px;
+      background: var(--amber); color: #000;
+      font-weight: 800; font-size: 1rem; text-decoration: none;
+      transition: all 0.25s; box-shadow: 0 4px 24px rgba(245,158,11,0.35);
+    }
+    .btn-main:hover { background: var(--amber-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245,158,11,0.45); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 28px; border-radius: 12px;
+      border: 1px solid var(--border2); color: var(--text3);
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      transition: all 0.25s; background: rgba(255,255,255,0.03);
+    }
+    .btn-ghost:hover { border-color: rgba(245,158,11,0.3); color: var(--amber); }
+
+    .hero-proof {
+      display: flex; align-items: center; gap: 0;
+      padding: 20px 24px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; gap: 20px;
+    }
+    .proof-avatars { display: flex; }
+    .proof-avatars span {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; border: 2px solid var(--dark);
+      margin-left: -8px;
+    }
+    .proof-avatars span:first-child { margin-left: 0; }
+    .proof-text { }
+    .proof-text strong { font-size: 0.92rem; font-weight: 700; display: block; }
+    .proof-text span { font-size: 0.78rem; color: var(--text2); }
+    .proof-divider { width: 1px; height: 36px; background: var(--border2); }
+    .proof-stat { text-align: center; }
+    .proof-stat strong { font-size: 1.1rem; font-weight: 900; color: var(--amber); display: block; }
+    .proof-stat span { font-size: 0.72rem; color: var(--text2); }
+
+    /* ===== HERO RIGHT - ACTIVITY FEED ===== */
+    .hero-right {
+      flex-shrink: 0; width: 340px;
+    }
+    .activity-panel {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .panel-header {
+      padding: 18px 20px; border-bottom: 1px solid var(--border2);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .panel-header strong { font-size: 0.88rem; font-weight: 700; }
+    .panel-header span { font-size: 0.75rem; color: var(--text2); margin-left: auto; }
+    .activity-list { padding: 8px 0; }
+    .activity-item {
+      padding: 12px 20px; display: flex; gap: 12px; align-items: flex-start;
+      transition: background 0.2s;
+    }
+    .activity-item:hover { background: rgba(245,158,11,0.04); }
+    .act-ava {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .act-body { flex: 1; }
+    .act-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 2px; }
+    .act-text { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
+    .act-time { font-size: 0.7rem; color: var(--text2); margin-top: 3px; }
+    .act-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 6px;
+      font-size: 0.7rem; font-weight: 600; margin-top: 4px;
+    }
+    .tag-checkin { background: rgba(74,222,128,0.12); color: var(--accent); }
+    .tag-win { background: rgba(245,158,11,0.12); color: var(--amber); }
+    .tag-ask { background: rgba(96,165,250,0.12); color: var(--accent2); }
+    .tag-review { background: rgba(251,113,133,0.12); color: var(--rose); }
+
+    .panel-footer {
+      padding: 14px 20px; border-top: 1px solid var(--border2);
+      font-size: 0.78rem; color: var(--text2); text-align: center;
+    }
+    .panel-footer strong { color: var(--amber); }
+
+    /* ===== HOW IT WORKS ===== */
+    .how {
+      padding: 100px 6%; background: var(--dark2);
+    }
+    .section-eyebrow { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); font-weight: 700; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.9rem, 3.5vw, 2.7rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; line-height: 1.2; }
+    .section-sub { font-size: 1rem; color: var(--text2); max-width: 520px; line-height: 1.8; }
+
+    .how-intro { margin-bottom: 64px; }
+    .how-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2px; background: var(--border2); border-radius: 20px; overflow: hidden;
+    }
+    .how-step {
+      background: var(--card); padding: 36px 32px;
+      position: relative; transition: background 0.25s;
+    }
+    .how-step:hover { background: var(--card2); }
+    .step-num {
+      font-size: 3.5rem; font-weight: 900; letter-spacing: -3px;
+      color: rgba(245,158,11,0.15); line-height: 1;
+      margin-bottom: 20px; display: block;
+    }
+    .how-step h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; }
+    .how-step p { font-size: 0.85rem; color: var(--text2); line-height: 1.75; }
+    .step-arrow {
+      position: absolute; top: 36px; right: -12px;
+      width: 24px; height: 24px; background: var(--dark2);
+      border: 1px solid var(--border2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; z-index: 2; color: var(--text2);
+    }
+
+    /* ===== PAOPAO SYSTEM ===== */
+    .paopao {
+      padding: 100px 6%; background: var(--dark);
+    }
+    .paopao-inner { display: flex; gap: 80px; align-items: center; }
+    .paopao-left { flex: 1; max-width: 520px; }
+    .paopao-left .section-title { margin-bottom: 20px; }
+    .paopao-left .section-sub { margin-bottom: 36px; }
+    .feature-list { display: flex; flex-direction: column; gap: 20px; }
+    .feat-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; border-radius: 14px;
+      background: var(--card); border: 1px solid var(--border2);
+      transition: all 0.25s;
+    }
+    .feat-item:hover { border-color: var(--border); transform: translateX(4px); }
+    .feat-item.active { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.05); }
+    .feat-ico {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+      background: rgba(245,158,11,0.1);
+    }
+    .feat-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
+    .feat-item p { font-size: 0.82rem; color: var(--text2); line-height: 1.65; }
+
+    .paopao-right { flex-shrink: 0; width: 360px; }
+    .week-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .week-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border2);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .week-header h4 { font-size: 0.9rem; font-weight: 700; }
+    .week-header span { font-size: 0.75rem; color: var(--amber); font-weight: 600; }
+    .week-body { padding: 16px 24px; }
+    .week-item {
+      display: flex; gap: 14px; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid var(--border2);
+    }
+    .week-item:last-child { border-bottom: none; }
+    .check-circle {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+    .checked { background: var(--accent); color: #000; }
+    .unchecked { border: 2px solid var(--border2); }
+    .inprog { border: 2px solid var(--amber); }
+    .week-item-text { flex: 1; }
+    .week-item-text strong { font-size: 0.85rem; display: block; margin-bottom: 2px; }
+    .week-item-text span { font-size: 0.73rem; color: var(--text2); }
+    .week-item-badge {
+      font-size: 0.68rem; padding: 2px 8px; border-radius: 6px; font-weight: 600;
+    }
+    .b-done { background: rgba(74,222,128,0.1); color: var(--accent); }
+    .b-today { background: rgba(245,158,11,0.1); color: var(--amber); }
+    .b-lock { background: var(--card2); color: var(--text2); }
+    .week-progress { padding: 16px 24px; border-top: 1px solid var(--border2); }
+    .prog-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 8px; }
+    .prog-label span:last-child { color: var(--amber); font-weight: 700; }
+    .prog-track { height: 6px; border-radius: 99px; background: var(--card2); overflow: hidden; }
+    .prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--amber), var(--warm)); animation: fillIn 1.5s ease-out; }
+    @keyframes fillIn { from { width: 0; } }
+
+    /* ===== COMPANIONS ===== */
+    .companions {
+      padding: 100px 6%; background: var(--dark2);
+    }
+    .companions-intro { margin-bottom: 64px; }
+    .companions-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .companion-card {
+      padding: 28px; background: var(--card);
+      border: 1px solid var(--border2); border-radius: 20px;
+      transition: all 0.25s; cursor: default;
+    }
+    .companion-card:hover { transform: translateY(-4px); border-color: var(--border); }
+    .comp-head { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+    .comp-ava {
+      width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .ca1 { background: linear-gradient(135deg,#f59e0b,#fb923c); }
+    .ca2 { background: linear-gradient(135deg,#60a5fa,#818cf8); }
+    .ca3 { background: linear-gradient(135deg,#4ade80,#22d3ee); }
+    .comp-info h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 3px; }
+    .comp-info .role { font-size: 0.75rem; color: var(--text2); }
+    .comp-status {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; color: var(--accent); font-weight: 600;
+    }
+    .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.8s infinite; }
+
+    .comp-story {
+      font-size: 0.85rem; color: var(--text3); line-height: 1.8;
+      margin-bottom: 20px; border-left: 2px solid var(--border);
+      padding-left: 14px;
+    }
+    .comp-milestones { display: flex; flex-direction: column; gap: 8px; }
+    .milestone {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.78rem;
+    }
+    .ms-icon { font-size: 0.9rem; }
+    .ms-text { color: var(--text2); }
+    .ms-text strong { color: var(--amber); }
+    .comp-week {
+      margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border2);
+      display: flex; gap: 6px; align-items: center;
+    }
+    .week-dot {
+      flex: 1; height: 4px; border-radius: 99px; background: var(--card2);
+      transition: background 0.2s;
+    }
+    .week-dot.done { background: var(--amber); }
+    .week-dot.today { background: var(--warm); animation: today-pulse 1.5s infinite; }
+    @keyframes today-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .week-label { font-size: 0.7rem; color: var(--text2); margin-left: 4px; }
+
+    /* ===== COACHES ===== */
+    .coaches {
+      padding: 100px 6%; background: var(--dark);
+    }
+    .coaches-intro { margin-bottom: 64px; }
+    .coaches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .coach-card {
+      padding: 32px; background: var(--card);
+      border: 1px solid var(--border2); border-radius: 20px;
+      text-align: center; transition: all 0.25s;
+    }
+    .coach-card:hover { transform: translateY(-5px); border-color: var(--border); }
+    .coach-ava {
+      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 16px;
+      display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
+      border: 2px solid var(--border);
+    }
+    .coach-name { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+    .coach-title { font-size: 0.78rem; color: var(--amber); font-weight: 600; margin-bottom: 12px; }
+    .coach-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.75; margin-bottom: 18px; }
+    .coach-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .ctag {
+      padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+      background: rgba(245,158,11,0.08); color: var(--text2); border: 1px solid var(--border2);
+    }
+
+    /* ===== RHYTHM ===== */
+    .rhythm {
+      padding: 100px 6%; background: var(--dark2);
+    }
+    .rhythm-intro { margin-bottom: 64px; }
+    .timeline {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: 0 32px; align-items: start; max-width: 900px;
+    }
+    .tl-left { text-align: right; }
+    .tl-right { text-align: left; }
+    .tl-center {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .tl-node {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--amber); box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
+      flex-shrink: 0;
+    }
+    .tl-line { width: 2px; flex: 1; min-height: 40px; background: linear-gradient(to bottom, var(--amber), rgba(245,158,11,0.1)); }
+    .tl-item {
+      padding-bottom: 40px;
+      display: contents;
+    }
+    .tl-block {
+      padding: 18px 20px; border-radius: 14px;
+      background: var(--card); border: 1px solid var(--border2);
+      margin-bottom: 40px; transition: border-color 0.2s;
+    }
+    .tl-block:hover { border-color: var(--border); }
+    .tl-time { font-size: 0.72rem; color: var(--amber); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; }
+    .tl-block h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
+    .tl-block p { font-size: 0.8rem; color: var(--text2); line-height: 1.65; }
+    .tl-empty { }
+
+    /* ===== ABOUT ===== */
+    .about-wrap {
+      padding: 120px 6%;
+      background: var(--dark2);
+      position: relative;
+    }
+    .about-wrap .sec-label { margin-bottom: 0; }
+    .about-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 360px 1fr; gap: 80px; align-items: start;
+    }
+    @media(max-width:860px){ .about-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+    /* left card */
+    .about-avatar-card {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      padding: 40px 32px;
+      text-align: center;
+      position: sticky; top: 100px;
+    }
+    .about-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      border: 3px solid var(--amber);
+      box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
+    }
+    .about-avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .about-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+    .about-title {
+      font-size: 0.82rem; color: var(--amber);
+      font-weight: 600; letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+    .about-tag-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 28px;
+    }
+    .about-tag {
+      padding: 4px 12px; border-radius: 20px;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+      font-size: 0.75rem; color: var(--amber); font-weight: 600;
+    }
+    .about-stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .about-stat {
+      background: var(--dark3);
+      border-radius: 12px; padding: 14px 10px;
+      text-align: center;
+    }
+    .about-stat .num {
+      font-size: 1.3rem; font-weight: 900; color: var(--amber);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .about-stat .lbl { font-size: 0.7rem; color: var(--text2); line-height: 1.4; }
+
+    /* right content */
+    .about-content .sec-label { margin-bottom: 12px; }
+    .about-content h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; line-height: 1.2;
+    }
+    .about-content h2 em { color: var(--amber); font-style: normal; }
+    .about-lead {
+      font-size: 1.05rem; color: var(--text3); line-height: 1.9; margin-bottom: 36px;
+    }
+    .about-timeline { margin-bottom: 40px; }
+    .about-tl-item {
+      display: grid; grid-template-columns: 28px 1fr; gap: 16px;
+      margin-bottom: 28px; align-items: start;
+    }
+    .about-tl-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--warm));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0; margin-top: 2px;
+    }
+    .about-tl-body h4 {
+      font-size: 0.9rem; font-weight: 700; margin-bottom: 4px;
+      color: var(--text);
+    }
+    .about-tl-body p { font-size: 0.85rem; color: var(--text2); line-height: 1.7; }
+    .about-tl-body .abt-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2);
+      font-size: 0.7rem; color: var(--accent2); font-weight: 600; margin-bottom: 6px;
+    }
+
+    .about-why {
+      background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(251,146,60,0.04));
+      border: 1px solid rgba(245,158,11,0.15);
+      border-radius: 16px; padding: 28px 32px;
+    }
+    .about-why h4 {
+      font-size: 1rem; font-weight: 800; color: var(--amber); margin-bottom: 12px;
+    }
+    .about-why p { font-size: 0.9rem; color: var(--text3); line-height: 1.9; }
+
+    /* ===== CTA ===== */
+    .cta-wrap {
+      padding: 120px 6%;
+      background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(245,158,11,0.08) 0%, transparent 70%), var(--dark);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(245,158,11,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .cta-inner {
+      position: relative; z-index: 1; max-width: 900px; margin: 0 auto;
+    }
+    .cta-header { text-align: center; margin-bottom: 48px; }
+    .cta-dual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;
+    }
+    @media(max-width:700px){ .cta-dual { grid-template-columns: 1fr; } }
+
+    /* wechat qr card */
+    .wechat-card {
+      background: var(--card); border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 20px; padding: 32px 28px; text-align: center;
+    }
+    .wechat-card h4 {
+      font-size: 1rem; font-weight: 800; margin-bottom: 6px; color: var(--text);
+    }
+    .wechat-card p {
+      font-size: 0.82rem; color: var(--text2); margin-bottom: 20px; line-height: 1.6;
+    }
+    .wechat-qr-wrap {
+      width: 180px; height: 180px; margin: 0 auto 16px;
+      background: #fff; border-radius: 16px; padding: 8px;
+      overflow: hidden;
+    }
+    .wechat-qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .wechat-name {
+      font-size: 0.88rem; color: var(--accent); font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .wechat-name::before {
+      content: ''; display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); animation: pulse 1.5s infinite;
+    }
+    .cta-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 8px;
+      background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25);
+      font-size: 0.78rem; color: var(--accent); font-weight: 700;
+      margin-bottom: 28px; letter-spacing: 0.3px;
+    }
+    .cta-wrap h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900;
+      letter-spacing: -1.5px; margin-bottom: 18px; line-height: 1.15;
+    }
+    .cta-wrap h2 em { color: var(--amber); font-style: normal; }
+    .cta-wrap p { font-size: 1rem; color: var(--text2); margin-bottom: 44px; line-height: 1.8; }
+
+    .cta-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px; margin-bottom: 20px;
+    }
+    .plan-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .plan-opt {
+      padding: 18px 16px; border-radius: 12px;
+      border: 2px solid var(--border2); text-align: center; cursor: pointer;
+      transition: all 0.2s; background: rgba(255,255,255,0.02);
+    }
+    .plan-opt.selected { border-color: var(--amber); background: rgba(245,158,11,0.08); }
+    .plan-opt strong { display: block; font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .plan-opt span { font-size: 0.75rem; color: var(--text2); }
+    .plan-opt .price { font-size: 1.4rem; font-weight: 900; color: var(--amber); display: block; margin: 8px 0 4px; }
+
+    .join-btn {
+      width: 100%; padding: 16px; border-radius: 12px; border: none;
+      background: var(--amber); color: #000; font-weight: 800; font-size: 1.05rem;
+      cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 24px rgba(245,158,11,0.3);
+    }
+    .join-btn:hover { background: var(--amber-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245,158,11,0.4); }
+    .cta-note { font-size: 0.78rem; color: var(--text2); margin-top: 14px; }
+    .cta-guarantees {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .guarantee { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--text2); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 40px 6%; border-top: 1px solid var(--border2);
+      background: var(--dark2);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-size: 1.1rem; font-weight: 800; color: var(--text3); }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 0.82rem; color: var(--text2); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--amber); }
+    .footer-copy { font-size: 0.78rem; color: var(--text2); }
+
+    /* ===== REVEAL ===== */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media(max-width:900px) {
+      .hero-inner { flex-direction: column; gap: 48px; }
+      .hero-right { width: 100%; max-width: 400px; }
+      .paopao-inner { flex-direction: column; }
+      .paopao-right { width: 100%; }
+      .nav-links { display: none; }
+      .timeline { grid-template-columns: auto 1fr; }
+      .tl-left { display: none; }
+    }
+    @media(max-width:600px) {
+      .plan-options { grid-template-columns: 1fr; }
+      .hero-proof { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .proof-divider { width: 100%; height: 1px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    同行者
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how">怎么运转</a></li>
+    <li><a href="#system">陪跑机制</a></li>
+    <li><a href="#companions">成员故事</a></li>
+    <li><a href="#about">关于我</a></li>
+  </ul>
+  <a href="https://lza59r2x.jsjform.com/f/kulgwH" target="_blank" class="nav-cta">申请加入</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-left reveal">
+      <div class="hero-eyebrow">
+        <div class="live-dot"></div>
+        现在有 87 人正在社区里打卡
+      </div>
+      <h1>
+        打IP这条路
+        <span class="line2">你不用一个人走</span>
+        <span class="line3">个人IP · 持续变现 · 陪跑成长社区</span>
+      </h1>
+      <p class="hero-desc">
+        很多人不是输在才华上，输在<strong>孤独地坚持</strong>上。同行者是一个真实的陪跑社区——有导师、有同伴、有节奏，每周跟着走，从定位到变现。
+      </p>
+      <div class="hero-actions">
+        <a href="https://lza59r2x.jsjform.com/f/kulgwH" target="_blank" class="btn-main">🤝 申请加入陪跑</a>
+        <a href="#system" class="btn-ghost">了解陪跑机制 →</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-avatars">
+          <span style="background:linear-gradient(135deg,#f59e0b,#fb923c)">👩</span>
+          <span style="background:linear-gradient(135deg,#60a5fa,#818cf8)">👨</span>
+          <span style="background:linear-gradient(135deg,#4ade80,#22d3ee)">👩‍💻</span>
+          <span style="background:linear-gradient(135deg,#fb7185,#f43f5e)">🧑</span>
+          <span style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">👨‍🎨</span>
+        </div>
+        <div class="proof-text">
+          <strong>2,400+ 位同行者</strong>
+          <span>正在这里打造各自的IP</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat">
+          <strong>91天</strong>
+          <span>平均首次变现周期</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat">
+          <strong>78%</strong>
+          <span>成员坚持超过3个月</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY FEED -->
+    <div class="hero-right reveal">
+      <div class="activity-panel">
+        <div class="panel-header">
+          <div class="live-dot"></div>
+          <strong>社区实时动态</strong>
+          <span>今天 · 刚刚</span>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="act-ava" style="background:linear-gradient(135deg,#f59e0b,#fb923c)">👩</div>
+            <div class="act-body">
+              <div class="act-name">林晓雯</div>
+              <div class="act-text">完成今日内容打卡！发布了第 23 篇小红书笔记 🎉</div>
+              <span class="act-tag tag-checkin">✓ 打卡</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-ava" style="background:linear-gradient(135deg,#60a5fa,#818cf8)">👨‍💻</div>
+            <div class="act-body">
+              <div class="act-name">张宇航</div>
+              <div class="act-text">第一笔变现到账！1v1 咨询收入 ¥2,400 💰</div>
+              <span class="act-tag tag-win">🏆 里程碑</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-ava" style="background:linear-gradient(135deg,#4ade80,#22d3ee)">👩‍🏫</div>
+            <div class="act-body">
+              <div class="act-name">苏美玲</div>
+              <div class="act-text">在提问墙发布：账号定位改了3次，该怎么做选择？</div>
+              <span class="act-tag tag-ask">💬 提问</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-ava" style="background:linear-gradient(135deg,#fb7185,#f43f5e)">🧑‍🎨</div>
+            <div class="act-body">
+              <div class="act-name">陈墨</div>
+              <div class="act-text">刚参加完本周导师复盘，感觉思路清晰很多！</div>
+              <span class="act-tag tag-review">📋 复盘</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-ava" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">👨‍🎨</div>
+            <div class="act-body">
+              <div class="act-name">王浩然</div>
+              <div class="act-text">打卡第 7 天！从来没有坚持这么久过，感谢大家督促 🙏</div>
+              <span class="act-tag tag-checkin">✓ 打卡</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">今天已有 <strong>143</strong> 条打卡记录 · 社区从不睡觉 😄</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-intro reveal">
+    <div class="section-eyebrow">运转方式</div>
+    <h2 class="section-title">不是课程，是陪你跑的队伍</h2>
+    <p class="section-sub">我们不给你一堆资料然后消失——而是每周陪着你，把方向变成行动，把行动变成习惯，把习惯变成收入。</p>
+  </div>
+  <div class="how-steps reveal">
+    <div class="how-step">
+      <span class="step-num">01</span>
+      <h3>入营定位</h3>
+      <p>加入后完成IP定位测评，导师1v1审阅你的情况，为你制定专属的90天行动路线图。</p>
+      <div class="step-arrow">→</div>
+    </div>
+    <div class="how-step">
+      <span class="step-num">02</span>
+      <h3>配对同伴组</h3>
+      <p>根据你的方向和节奏，加入4-6人的小组，互相打卡督促，组内成员成为你最近的同行者。</p>
+      <div class="step-arrow">→</div>
+    </div>
+    <div class="how-step">
+      <span class="step-num">03</span>
+      <h3>按节奏行动</h3>
+      <p>每周跟随社区节奏：任务清单 → 打卡 → 提问 → 导师反馈，循环推进，不迷失方向。</p>
+      <div class="step-arrow">→</div>
+    </div>
+    <div class="how-step">
+      <span class="step-num">04</span>
+      <h3>里程碑复盘</h3>
+      <p>每月一次成长复盘，导师帮你梳理卡点和突破方向，让每个月都有清晰的进展感。</p>
+    </div>
+  </div>
+</section>
+
+<!-- PAOPAO SYSTEM -->
+<section class="paopao" id="system">
+  <div class="paopao-inner">
+    <div class="paopao-left reveal">
+      <div class="section-eyebrow">陪跑机制</div>
+      <h2 class="section-title">让坚持变得<br/>不那么难</h2>
+      <p class="section-sub">我们把最容易让人放弃的几个节点，都设计了对应的支撑机制。</p>
+      <div class="feature-list">
+        <div class="feat-item active reveal">
+          <div class="feat-ico">🎯</div>
+          <div>
+            <h4>每周任务清单</h4>
+            <p>每周一发布本周任务，清晰、具体、可执行。你不需要想"我今天该做什么"，只需要做。</p>
+          </div>
+        </div>
+        <div class="feat-item reveal">
+          <div class="feat-ico">👥</div>
+          <div>
+            <h4>小组互打卡</h4>
+            <p>4-6人小组每天互相可见，有人在看着你就是最好的督促。完成打卡的人会获得勋章。</p>
+          </div>
+        </div>
+        <div class="feat-item reveal">
+          <div class="feat-ico">🙋</div>
+          <div>
+            <h4>随时提问墙</h4>
+            <p>遇到卡点随时提问，24小时内由导师或资深成员回复，不让你一个人憋着。</p>
+          </div>
+        </div>
+        <div class="feat-item reveal">
+          <div class="feat-ico">📋</div>
+          <div>
+            <h4>月度1v1复盘</h4>
+            <p>每月和导师做一次个人复盘，直面你的卡点，不是泛泛而谈，而是针对你的情况说。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paopao-right reveal">
+      <div class="week-card">
+        <div class="week-header">
+          <h4>📋 本周任务 · Week 8</h4>
+          <span>3/5 完成</span>
+        </div>
+        <div class="week-body">
+          <div class="week-item">
+            <div class="check-circle checked">✓</div>
+            <div class="week-item-text">
+              <strong>完成本周选题策划</strong>
+              <span>至少3个待发布选题</span>
+            </div>
+            <span class="week-item-badge b-done">已完成</span>
+          </div>
+          <div class="week-item">
+            <div class="check-circle checked">✓</div>
+            <div class="week-item-text">
+              <strong>发布1篇正式内容</strong>
+              <span>任意平台均可</span>
+            </div>
+            <span class="week-item-badge b-done">已完成</span>
+          </div>
+          <div class="week-item">
+            <div class="check-circle checked">✓</div>
+            <div class="week-item-text">
+              <strong>分析1条竞品内容</strong>
+              <span>填写分析模板</span>
+            </div>
+            <span class="week-item-badge b-done">已完成</span>
+          </div>
+          <div class="week-item">
+            <div class="check-circle inprog"></div>
+            <div class="week-item-text">
+              <strong>在社区发打卡3次</strong>
+              <span>已打卡 2/3</span>
+            </div>
+            <span class="week-item-badge b-today">进行中</span>
+          </div>
+          <div class="week-item">
+            <div class="check-circle unchecked"></div>
+            <div class="week-item-text">
+              <strong>参与本周导师答疑</strong>
+              <span>周六 20:00 直播</span>
+            </div>
+            <span class="week-item-badge b-lock">周六</span>
+          </div>
+        </div>
+        <div class="week-progress">
+          <div class="prog-label">
+            <span>本周进度</span>
+            <span>60%</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANIONS -->
+<section class="companions" id="companions">
+  <div class="companions-intro reveal">
+    <div class="section-eyebrow">成员故事</div>
+    <h2 class="section-title">他们也曾觉得<br/>"我好像做不到"</h2>
+    <p class="section-sub">这些不是已经成功的人的光鲜案例，而是还在路上的人——和你一样普通，因为没有放弃而有所不同。</p>
+  </div>
+  <div class="companions-grid">
+    <div class="companion-card reveal">
+      <div class="comp-head">
+        <div class="comp-ava ca1">👩‍🎨</div>
+        <div class="comp-info">
+          <h4>林晓雯</h4>
+          <div class="role">UI设计师 → 设计博主</div>
+        </div>
+        <div class="comp-status"><div class="status-dot"></div>在线</div>
+      </div>
+      <p class="comp-story">加入前发了两个月内容没什么反响，差点放弃。进入社区之后，小组里有人每天都在打卡，我感觉"自己不能掉队"，这反而成了最大的动力。</p>
+      <div class="comp-milestones">
+        <div class="milestone"><span class="ms-icon">📅</span><span class="ms-text">加入 <strong>第14天</strong>：账号粉丝首次破千</span></div>
+        <div class="milestone"><span class="ms-icon">💰</span><span class="ms-text">加入 <strong>第67天</strong>：课程首次售出，¥12,000</span></div>
+        <div class="milestone"><span class="ms-icon">🎖️</span><span class="ms-text">目前 <strong>第 8 周</strong>，从未断更</span></div>
+      </div>
+      <div class="comp-week">
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot today"></div>
+        <span class="week-label">连续打卡 7 周</span>
+      </div>
+    </div>
+    <div class="companion-card reveal">
+      <div class="comp-head">
+        <div class="comp-ava ca2">👨‍💻</div>
+        <div class="comp-info">
+          <h4>张宇航</h4>
+          <div class="role">后端工程师 → 技术博主</div>
+        </div>
+        <div class="comp-status"><div class="status-dot"></div>在线</div>
+      </div>
+      <p class="comp-story">以前总觉得"等我粉丝多了再变现"。导师在复盘的时候直接告诉我：你现在就可以接咨询，不需要等。那一句话改变了我的思路。</p>
+      <div class="comp-milestones">
+        <div class="milestone"><span class="ms-icon">🙋</span><span class="ms-text">第一次提问后 <strong>48小时内</strong> 收到导师回复</span></div>
+        <div class="milestone"><span class="ms-icon">💰</span><span class="ms-text">加入 <strong>第28天</strong>：第一个咨询客户 ¥2,400</span></div>
+        <div class="milestone"><span class="ms-icon">📈</span><span class="ms-text">3个月变现合计 <strong>¥42,000</strong></span></div>
+      </div>
+      <div class="comp-week">
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot today"></div>
+        <span class="week-label">连续打卡 5 周</span>
+      </div>
+    </div>
+    <div class="companion-card reveal">
+      <div class="comp-head">
+        <div class="comp-ava ca3">👩‍🏫</div>
+        <div class="comp-info">
+          <h4>苏美玲</h4>
+          <div class="role">小学教师 → 亲子教育博主</div>
+        </div>
+        <div class="comp-status"><div class="status-dot"></div>在线</div>
+      </div>
+      <p class="comp-story">我是社区里的"慢慢来"派，自己节奏慢。但没有人催我，组里反而有人说"我也可以按自己节奏来"，这让我不那么焦虑了，反而走得更稳。</p>
+      <div class="comp-milestones">
+        <div class="milestone"><span class="ms-icon">🗺️</span><span class="ms-text"><strong>第 2 周</strong> 确定了"职场妈妈亲子"细分方向</span></div>
+        <div class="milestone"><span class="ms-icon">🏘️</span><span class="ms-text">加入 <strong>第4个月</strong>：建立付费社群，首月 ¥8,000</span></div>
+        <div class="milestone"><span class="ms-icon">😊</span><span class="ms-text">说：<strong>"第一次不觉得做IP是孤独的事"</strong></span></div>
+      </div>
+      <div class="comp-week">
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot done"></div><div class="week-dot done"></div>
+        <div class="week-dot today"></div>
+        <span class="week-label">连续打卡 4 周</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section class="coaches" id="coaches">
+  <div class="coaches-intro reveal" style="max-width:600px;">
+    <div class="section-eyebrow">导师团队</div>
+    <h2 class="section-title">陪你跑的人<br/>自己先跑过</h2>
+    <p class="section-sub">我们的导师不是"专家"，是真实做过IP变现、踩过坑、并且愿意真诚分享的人。</p>
+  </div>
+  <div class="coaches-grid">
+    <div class="coach-card reveal">
+      <div class="coach-ava">🧑‍💼</div>
+      <div class="coach-name">晓明老师</div>
+      <div class="coach-title">定位 & 内容架构导师</div>
+      <p class="coach-desc">前500强品牌策划，从0做出15万粉丝知识付费账号，年变现超过80万。专注帮助新人找到差异化定位。</p>
+      <div class="coach-tags">
+        <span class="ctag">IP定位</span>
+        <span class="ctag">内容架构</span>
+        <span class="ctag">知识付费</span>
+      </div>
+    </div>
+    <div class="coach-card reveal">
+      <div class="coach-ava">👩‍🎓</div>
+      <div class="coach-name">Lily老师</div>
+      <div class="coach-title">增长 & 私域变现导师</div>
+      <p class="coach-desc">小红书早期博主，私域从0到3万粉，咨询+课程累计变现200万+。擅长把流量转化成真实收入。</p>
+      <div class="coach-tags">
+        <span class="ctag">私域运营</span>
+        <span class="ctag">转化漏斗</span>
+        <span class="ctag">品牌合作</span>
+      </div>
+    </div>
+    <div class="coach-card reveal">
+      <div class="coach-ava">👨‍🎨</div>
+      <div class="coach-name">老K</div>
+      <div class="coach-title">创作系统 & 心态陪跑导师</div>
+      <p class="coach-desc">全职创作者第4年，经历过"停更6个月"的至暗时刻，专门帮成员解决卡点、重建创作系统和节奏感。</p>
+      <div class="coach-tags">
+        <span class="ctag">内容创作</span>
+        <span class="ctag">心态复盘</span>
+        <span class="ctag">长期主义</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEKLY RHYTHM -->
+<section class="rhythm">
+  <div class="rhythm-intro reveal" style="max-width:600px; margin-bottom:64px;">
+    <div class="section-eyebrow">每周节奏</div>
+    <h2 class="section-title">知道这周该做什么<br/>是最大的安心</h2>
+    <p class="section-sub">我们每周都有固定节奏，你不需要从零想计划，只需要跟上节拍。</p>
+  </div>
+
+  <div class="timeline reveal" style="max-width:860px;">
+    <div class="tl-block tl-left">
+      <div class="tl-time">周一</div>
+      <h4>🗓️ 本周任务发布</h4>
+      <p>导师发布本周主题任务和具体行动清单，你可以直接对照执行。</p>
+    </div>
+    <div class="tl-center"><div class="tl-node"></div><div class="tl-line"></div></div>
+    <div class="tl-empty"></div>
+
+    <div class="tl-empty"></div>
+    <div class="tl-center"><div class="tl-node"></div><div class="tl-line"></div></div>
+    <div class="tl-block tl-right">
+      <div class="tl-time">周二 — 周五</div>
+      <h4>📝 执行 & 每日打卡</h4>
+      <p>按任务行动，每天在小组打卡，遇到卡点随时在提问墙发问。</p>
+    </div>
+
+    <div class="tl-block tl-left">
+      <div class="tl-time">周六 20:00</div>
+      <h4>🎙️ 导师直播答疑</h4>
+      <p>本周提问墙热门问题现场解答，可提前预约1v1连麦，直接问导师。</p>
+    </div>
+    <div class="tl-center"><div class="tl-node"></div><div class="tl-line"></div></div>
+    <div class="tl-empty"></div>
+
+    <div class="tl-empty"></div>
+    <div class="tl-center"><div class="tl-node"></div></div>
+    <div class="tl-block tl-right">
+      <div class="tl-time">周日</div>
+      <h4>🔁 个人周复盘</h4>
+      <p>用社区提供的复盘模板做本周回顾，记录收获和下周打算，形成成长档案。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-wrap" id="about">
+  <div class="about-inner">
+
+    <!-- left: avatar card -->
+    <div class="about-avatar-card fade-in">
+      <div class="about-avatar"><img src="avatar.jpg" alt="同陈老师" /></div>
+      <div class="about-name">同陈老师</div>
+      <div class="about-title">13年营销运营 · 个人IP打造专家</div>
+      <div class="about-tag-row">
+        <span class="about-tag">品牌运营</span>
+        <span class="about-tag">知识付费</span>
+        <span class="about-tag">私域流量</span>
+        <span class="about-tag">内容变现</span>
+        <span class="about-tag">联合创始人</span>
+      </div>
+      <div class="about-stats-grid">
+        <div class="about-stat">
+          <div class="num">1400万</div>
+          <div class="lbl">运营IP账号<br/>全网粉丝</div>
+        </div>
+        <div class="about-stat">
+          <div class="num">1800万</div>
+          <div class="lbl">单场课程<br/>最高成交额</div>
+        </div>
+        <div class="about-stat">
+          <div class="num">22万+</div>
+          <div class="lbl">线上课程<br/>累计学员</div>
+        </div>
+        <div class="about-stat">
+          <div class="num">50人</div>
+          <div class="lbl">带领团队<br/>规模</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: story -->
+    <div class="about-content fade-in">
+      <div class="sec-label">✦ 关于我</div>
+      <h2>我走过这条路<br/><em>所以我知道难在哪</em></h2>
+      <p class="about-lead">
+        我有13年营销运营经验，在知识付费行业的头部企业做过品牌运营总监、在线教育总监、流量部内容总监。
+        我带队运营过全网1400万粉丝的创始人IP账号，主导过单场成交1800万的千人大课，从0到1搭建过完整的开课SOP。
+        <br/><br/>
+        但这些光鲜数字背后，我也经历过"内容发了没人看""涨了粉丝不变现""团队扩了但混乱"的所有阶段。
+        这就是为什么我想做这个社区——<strong style="color:var(--text)">不是讲理论，是陪你把你遇到的坑一个一个过。</strong>
+      </p>
+
+      <div class="about-timeline">
+        <div class="about-tl-item">
+          <div class="about-tl-dot">🏢</div>
+          <div class="about-tl-body">
+            <span class="abt-tag">2015—2023 · 陈列知识付费头部企业</span>
+            <h4>运营总监 · 流量部内容总监 · 品牌运营总监</h4>
+            <p>带领50人团队，运营公司两位创始人抖音+视频号IP，其中一个账号全网矩阵4000万粉丝；将线下课从60人小班扩至1200人千人大课；小鹅通线上平台累计用户超22万；公众号从40万粉丝增长至104万，2017年进入全国500强。</p>
+          </div>
+        </div>
+        <div class="about-tl-item">
+          <div class="about-tl-dot">📺</div>
+          <div class="about-tl-body">
+            <span class="abt-tag">2024—至今 · 新媒体运营总监</span>
+            <h4>统筹IP矩阵 · 打造私域变现闭环</h4>
+            <p>统筹运营公司IP+老师IP矩阵短视频账号，设计账号流量变现链路，组建私域团队，打造公开课营销SOP及直播变现流程，继续将方法论沉淀成可复用体系。</p>
+          </div>
+        </div>
+        <div class="about-tl-item">
+          <div class="about-tl-dot">🚀</div>
+          <div class="about-tl-body">
+            <span class="abt-tag">2014—2015 · 创业经历</span>
+            <h4>姨匠科技 · 联合创始人</h4>
+            <p>联合创立"姨妈皂"互联网品牌，主导品牌设计与公众号/微博运营，项目获得百万天使投资，被多家主流媒体报道，亲历产品从0到1全过程。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-why">
+        <h4>💬 为什么我要做这个社区？</h4>
+        <p>
+          做了这么多年IP，我最大的感受是：<strong style="color:var(--text)">大多数人不是没能力，是太孤独了</strong>。
+          没人告诉你这条路对不对，没人帮你在卡壳的时候推一把，没有可以对标的参照系。
+          <br/><br/>
+          我做过的每一个0到1项目，背后都有一个关键时刻——某个人在某个节点说了一句话，让事情转向了。
+          我想成为那个人。不是给你一套课程自己消化，而是真正陪你走这段路。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA / JOIN -->
+<section class="cta-wrap" id="join">
+  <div class="cta-inner">
+
+    <!-- header -->
+    <div class="cta-header">
+      <div class="cta-badge">✦ 当前期次还有 9 个名额</div>
+      <h2>找到你的<em>同行者</em><br/>从这一期开始</h2>
+      <p>不是一个人摸索，而是一群人走同一条路。<br/>加入后的第一件事，是和同陈老师聊清楚你的方向——然后就出发。</p>
+    </div>
+
+    <!-- dual layout -->
+    <div class="cta-dual">
+
+      <!-- left: plan + join -->
+      <div class="cta-box">
+        <div class="plan-options">
+          <div class="plan-opt selected" onclick="selectPlan(this)">
+            <strong>🚀 标准陪跑</strong>
+            <span class="price">¥699</span>
+            <span>/ 季度 · 3个月</span>
+          </div>
+          <div class="plan-opt" onclick="selectPlan(this)">
+            <strong>⚡ 强化陪跑</strong>
+            <span class="price">¥1,299</span>
+            <span>/ 季度 · 含1v1月度复盘</span>
+          </div>
+        </div>
+        <button class="join-btn" onclick="handleJoin()">🤝 申请加入这一期</button>
+        <p class="cta-note">提交后同陈老师会在 24 小时内联系你，确认方向后正式入营</p>
+      </div>
+
+      <!-- right: wechat qr -->
+      <div class="wechat-card">
+        <h4>💬 先加微信聊一聊</h4>
+        <p>不确定适不适合？<br/>先扫码和同陈老师聊聊你的情况，免费咨询，没有压力</p>
+        <div class="wechat-qr-wrap">
+          <img src="wechat-qr.png" alt="同陈老师微信二维码" />
+        </div>
+        <div class="wechat-name">🟢 同陈老师 · 随时回复</div>
+      </div>
+
+    </div>
+
+    <div class="cta-guarantees">
+      <div class="guarantee">✅ 7天不适合全额退款</div>
+      <div class="guarantee">✅ 随时暂停，不会抛下你</div>
+      <div class="guarantee">✅ 下一期续营享半价</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">同行者 · 同陈老师的IP陪跑社区</div>
+  <ul class="footer-links">
+    <li><a href="#how">怎么运转</a></li>
+    <li><a href="#system">陪跑机制</a></li>
+    <li><a href="#about">关于我</a></li>
+    <li><a href="#join">加入社区</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 同行者 · 让做IP不再孤独</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stagger cards
+  ['companion-card','coach-card','how-step','feat-item'].forEach(cls => {
+    document.querySelectorAll('.' + cls).forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.08}s`;
+    });
+  });
+
+  // Plan selection
+  function selectPlan(el) {
+    document.querySelectorAll('.plan-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // Join button
+  function handleJoin() {
+    const plan = document.querySelector('.plan-opt.selected strong').textContent;
+    const url = 'https://lza59r2x.jsjform.com/f/kulgwH?plan=' + encodeURIComponent(plan.replace(/^[^\s]+\s/,''));
+    window.open(url, '_blank');
+  }
+
+  // Animate activity feed - auto scroll
+  const feed = document.querySelector('.activity-list');
+  if(feed) {
+    let items = [...feed.querySelectorAll('.activity-item')];
+    const newItems = [
+      { ava: '🧑‍🔬', bg: 'linear-gradient(135deg,#f59e0b,#a78bfa)', name: '周天明', text: '完成第一次线上分享，反响超出预期！', tag: 'tag-win', tagText: '🏆 里程碑' },
+      { ava: '👩‍💼', bg: 'linear-gradient(135deg,#fb7185,#fb923c)', name: '赵欣欣', text: '今日打卡：完成了账号定位文档 ✍️', tag: 'tag-checkin', tagText: '✓ 打卡' },
+    ];
+    let idx = 0;
+    setInterval(() => {
+      const d = newItems[idx % newItems.length]; idx++;
+      const div = document.createElement('div');
+      div.className = 'activity-item';
+      div.style.cssText = 'opacity:0;transform:translateY(-10px);transition:all 0.4s';
+      div.innerHTML = `
+        <div class="act-ava" style="background:${d.bg}">${d.ava}</div>
+        <div class="act-body">
+          <div class="act-name">${d.name}</div>
+          <div class="act-text">${d.text}</div>
+          <span class="act-tag ${d.tag}">${d.tagText}</span>
+        </div>`;
+      feed.insertBefore(div, feed.firstChild);
+      setTimeout(() => { div.style.opacity = '1'; div.style.transform = 'none'; }, 50);
+      if(feed.children.length > 6) {
+        const last = feed.lastElementChild;
+        last.style.cssText = 'opacity:0;transform:translateY(10px);transition:all 0.3s';
+        setTimeout(() => last.remove(), 350);
+      }
+    }, 5000);
+  }
+</script>
+</body>
+</html>
